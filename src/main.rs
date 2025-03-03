@@ -1,29 +1,36 @@
-enum Algo {
-    
-}
-
-struct Key {
-    algo: String,
-    value: String,
+enum Key {
+    RSA { key: String },
 }
 
 struct Keychain {
     keys: Vec<Key>,
 }
 
-impl Keychain {
-    pub fn encrypt(message: Vec<u8>) {
-
-    }
-    pub fn decrypt(message: Vec<u8>) {
-
-    }
+enum ParsingError {
+    UnknownAlgo { name: String },
+    RSAKeyMissing,
 }
+
 impl std::str::FromStr for Keychain {
-    type Err = ();
+    type Err = ParsingError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-
+        let mut items = s.split(':');
+        let mut keys = Vec::new();
+        while let Some(algo_name) = items.next() {
+            match algo_name {
+                "rsa" => {
+                    let key = items.next().ok_or(ParsingError::RSAKeyMissing)?;
+                    keys.push(Key::RSA { key: key.to_owned() });
+                }
+                _ => {
+                    return Err(ParsingError::UnknownAlgo {
+                        name: algo_name.to_owned(),
+                    })
+                }
+            }
+        }
+        Ok(Self { keys })
     }
 }
 impl std::fmt::Display for Keychain {
@@ -32,9 +39,12 @@ impl std::fmt::Display for Keychain {
             if index != 0 {
                 f.write_str(":")?;
             }
-            f.write_str(&key.algo)?;
-            f.write_str("_")?;
-            f.write_str(&key.value)?;
+            match key {
+                Key::RSA { key } => {
+                    f.write_str("rsa:")?;
+                    f.write_str(key)?;
+                }
+            }
         }
         Ok(())
     }

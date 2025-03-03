@@ -1,0 +1,17 @@
+How this should work:
+
+=== ENCRYPTION ===
+
+encryption-algo1:...:encryption-algo2:...
+
+->
+
+First, we encrypt the input data using encryption-algo1. Then, we pass that encrypted block to encryption-algo2 as if it's the original input data. If we're decrypting and not encrypting, we should just go backwards and do decryptions
+
+=== SIGNING ===
+
+signing-algo1:...
+
+->
+
+When signing, we do this: [data] -> [data][SOME SORT OF SEPARATOR][signature]. When checking the signature, we divide by the separator and thus get everything for other steps

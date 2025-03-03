@@ -1,0 +1,24 @@
+The final goal of the project: provide the ability to have a cryptographic identity be backed not only by one algorithm, but by as many as possible, to reduce the attack range for post-quantum environments. This goal is very abstract and thus for now I have no idea what to do, so I'm instead solving an actual practical issue I'm having right now
+
+The current goal of the project: provide the ability to create signed and encrypted messages (text or binary) for a specific sender, also allow to decrypt the messages while checking their validity. Also reliant not on one, but on many algorithms at once. Make it all a cmdline tool and nothing more
+
+=== UI ===
+
+```
+executable make_keychains self_secret_keychain self_public_keychain
+```
+makes keychains and puts them into the specified files
+
+```
+executable enc self_secret_keychain recipient_public_keychain << EOF
+data
+EOF
+```
+outputs plaintext with the encrypted bytes from stdin
+
+```
+executable dec self_secret_keychain recipient_public_keychain << EOF
+*encrypted data*
+EOF
+```
+outputs the bytes initially encrypted
