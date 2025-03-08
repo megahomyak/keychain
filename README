@@ -5,19 +5,19 @@ The current goal of the project: provide the ability to create signed and encryp
 === UI ===
 
 ```
-executable make_keychains self_secret_keychain self_public_keychain
+executable make_keychains self_secret_keychain_path self_public_keychain_path
 ```
 makes keychains and puts them into the specified files
 
 ```
-executable enc self_secret_keychain recipient_public_keychain << EOF
+executable enc self_secret_keychain_path recipient_public_keychain_path << EOF
 data
 EOF
 ```
 outputs plaintext with the encrypted bytes from stdin
 
 ```
-executable dec self_secret_keychain recipient_public_keychain << EOF
+executable dec self_secret_keychain_path recipient_public_keychain_path << EOF
 *encrypted data*
 EOF
 ```
